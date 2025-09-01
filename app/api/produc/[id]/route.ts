@@ -4,15 +4,14 @@ import verifyAuth from "@/middleware";
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } } | { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } } 
 ) {
-  const params = await context.params; // handles both
   const { id } = params;
   const userId = verifyAuth(req);
   if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   try {
-    const product = await prisma.product.findUnique({ where: { id: params.id } });
+    const product = await prisma.product.findUnique({ where: { id } });
     if (!product) return NextResponse.json({ message: "Product not found" }, { status: 404 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -24,7 +23,7 @@ export async function PUT(
 
     const body = await req.json();
     const updated = await prisma.product.update({
-      where: { id: params.id },
+      where: { id },
       data: { ...body, updated_by: userId },
     });
 
@@ -37,16 +36,14 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } } | { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } } 
 ) {
-  const params = await context.params; // handles both
   const { id } = params;
-
   const userId = verifyAuth(req);
   if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   try {
-    const product = await prisma.product.findUnique({ where: { id: params.id } });
+    const product = await prisma.product.findUnique({ where: { id } });
     if (!product) return NextResponse.json({ message: "Product not found" }, { status: 404 });
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -57,7 +54,7 @@ export async function DELETE(
     }
 
     const deleted = await prisma.product.update({
-      where: { id: params.id },
+      where: { id },
       data: { is_deleted: true, updated_by: userId },
     });
 
