@@ -1,8 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import verifyAuth  from "@/middleware";
+import verifyAuth from "@/middleware";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } } | { params: Promise<{ id: string }> }
+) {
+  const params = await context.params; // handles both
+  const { id } = params;
   const userId = verifyAuth(req);
   if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
@@ -24,12 +29,19 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     });
 
     return NextResponse.json({ message: "Product updated", product: updated });
-  } catch {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } } | { params: Promise<{ id: string }> }
+) {
+  const params = await context.params; // handles both
+  const { id } = params;
+
   const userId = verifyAuth(req);
   if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
@@ -50,7 +62,8 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     });
 
     return NextResponse.json({ success: true, message: "Deleted", data: deleted });
-  } catch {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }
