@@ -5,6 +5,7 @@ import axios from "axios"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+const backend = process.env.BACKEND_URL
 
 const Signin = () => {
     const router = useRouter()
@@ -13,7 +14,7 @@ const Signin = () => {
 
     const handleSignin = async() => {
         try {
-      const response = await axios.post("http://localhost:8000/signin",
+      const response = await axios.post(`/api/signin`,
         { username, password }
       );
       const token = response.data.token;

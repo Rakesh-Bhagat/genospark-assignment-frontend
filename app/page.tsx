@@ -29,12 +29,13 @@ const DashboardPage = () => {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const response = await axios.get("http://localhost:8000/allProducts", {
+        const response = await axios.get("/api/allProducts", {
           headers: {
             Authorization: localStorage.getItem("token"),
             "Content-Type": "application/json",
           },
         });
+        console.log(response.data.data)
         setProducts(response.data.data);
         console.log(products);
       } catch (error) {
@@ -48,7 +49,7 @@ const DashboardPage = () => {
   const handleDelete = async (ProductId: string) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/product/${ProductId}`,
+        `/api/produc/${ProductId}`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -63,7 +64,7 @@ const DashboardPage = () => {
   const handleAddProduct = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/product",
+        "/api/product",
         {
           name: productName,
           desc: productDesc,
@@ -89,7 +90,7 @@ const DashboardPage = () => {
   const handleUpdate = async (productId: string) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/product/${productId}`,
+        `/api/produc/${productId}`,
         {
           name: productName,
           desc: productDesc,

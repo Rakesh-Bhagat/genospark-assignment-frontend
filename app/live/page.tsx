@@ -20,7 +20,7 @@ const PublishedProducts = () => {
   useEffect(() => {
     async function fetchPublishProduct() {
       try {
-        const response = await axios.get("http://localhost:8000/products");
+        const response = await axios.get(`/api/products`);
         console.log(response)
         setProducts(response.data.data);
       } catch (error) { console.log(error)}
