@@ -104,9 +104,10 @@ const DashboardPage = () => {
         }
       );
 
+      console.log(response.data.data)
       setProducts((prev) =>
         prev.map((prod) =>
-          prod.id === productId ? { ...prod, ...response.data.product } : prod
+          prod.id === productId ? { ...prod, ...response.data.data } : prod
         )
       );
 
@@ -265,9 +266,6 @@ const DashboardPage = () => {
                     <button
                       className="cursor-pointer"
                       onClick={() => {
-                        setProductDesc("")
-                        setProductName("")
-                        setStatus("Draft")
                         setIsUpdateOpen(false)}}
                     >
                       <X className="w-4 h-4 text-gray-700" />
@@ -310,9 +308,6 @@ const DashboardPage = () => {
                     <button
                       className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 cursor-pointer"
                       onClick={() => {
-                        setProductDesc("")
-                        setProductName("")
-                        setStatus("Draft")
                         setIsUpdateOpen(false)}}
                     >
                       Cancel

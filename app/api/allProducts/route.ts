@@ -7,7 +7,11 @@ export async function GET(req: Request) {
   if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      where:{
+        is_deleted: false
+      }
+    });
     return NextResponse.json({
       success: true,
       message: "Products fetched successfully",

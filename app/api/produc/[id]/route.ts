@@ -23,10 +23,10 @@ export async function PUT(
     const body = await req.json();
     const updated = await prisma.product.update({
       where: { id },
-      data: { ...body, updated_by: userId },
+      data: { ...body, updated_by: userId, is_deleted : false },
     });
 
-    return NextResponse.json({ message: "Product updated", product: updated });
+    return NextResponse.json({ message: "Product updated", data: updated });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
